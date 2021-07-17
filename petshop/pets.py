@@ -36,9 +36,17 @@ def dashboard():
     order = request.args.get("order", "asc")
     
     if order == "asc":
-        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.id")
+        if oby != "species":
+                p = "p."+ str(oby)
+                cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by {};".format(p))
+        else:
+                cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by s.name;")
     else:
-        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.id desc")
+        if oby != "species":
+                p = "p."+ str(oby)
+                cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by {} desc;".format(p))
+        else:
+                cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by s.name desc;")
     pets = cursor.fetchall()
     
     return render_template('index.html', pets = pets, order="desc" if order=="asc" else "asc")
