@@ -92,7 +92,7 @@ def edit(pid):
         description = request.form.get('description')
         sold = request.form.get("sold")
         #d = datetime.datetime.strptime(sold, '%Y-%m-%d')
-        if sold == "sold":
+        if sold:
                 d = datetime.datetime.now()
         # TODO Handle sold
         
